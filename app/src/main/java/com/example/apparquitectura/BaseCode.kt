@@ -4,10 +4,12 @@ package com.example.apparquitectura
 *
 *
 * MainActivity.kt
+//Generate list of coupon offers - View Controller
 val rvCoupons: RecyclerView = findViewById(R.id.rvCoupons)
 rvCoupons.layoutManager = LinearLayoutManager(this)
 val coupons = ArrayList<Coupon>()
 
+// Call to API
 val apiService = getClientService()
 val call = apiService.getCoupons()
 
@@ -31,7 +33,7 @@ call.enqueue(object : Callback<JsonObject> {
 
 })
 
-
+// Connection with API - Model
 val apiKey = "69d1837829128f9565368ca704c63207"
 val urlApi = "http://feed.linkmydeals.com/"
 
@@ -61,13 +63,13 @@ fun getClientService(): ApiService {
 
     return  retrofit.create(ApiService::class.java)
 }
-
+// Model
 interface ApiService {
     @GET("getOffers/")
     fun getCoupons(): Call<JsonObject>
 }
 
-
+// Show coupon details - View Controller
 CouponDetailActivity.java
 
         couponSelected = intent.getSerializableExtra("COUPON") as Coupon
