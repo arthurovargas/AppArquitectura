@@ -1,4 +1,4 @@
-package com.example.apparquitectura
+package com.example.apparquitectura.view
 
 import android.content.Intent
 import android.util.Log
@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.apparquitectura.model.Coupon
+import com.example.apparquitectura.R
 import com.squareup.picasso.Picasso
 
 class RecyclerCouponsAdapter(var coupons : ArrayList<Coupon>, var resource: Int) : RecyclerView.Adapter<RecyclerCouponsAdapter.CardCouponHolder>()  {

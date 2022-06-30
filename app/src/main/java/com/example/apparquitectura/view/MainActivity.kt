@@ -1,10 +1,12 @@
-package com.example.apparquitectura
+package com.example.apparquitectura.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
+import com.example.apparquitectura.model.Coupon
+import com.example.apparquitectura.R
 import com.example.apparquitectura.model.ApiAdapter
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
