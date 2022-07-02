@@ -13,6 +13,11 @@ import com.example.apparquitectura.R
 import com.squareup.picasso.Picasso
 
 class RecyclerCouponsAdapter(var coupons : ArrayList<Coupon>?, var resource: Int) : RecyclerView.Adapter<RecyclerCouponsAdapter.CardCouponHolder>()  {
+
+    fun setCouponsList(coupon: List<Coupon>?){
+
+    }
+
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): CardCouponHolder {
         var view: View = LayoutInflater.from(p0!!.context).inflate(resource, p0, false)
         return CardCouponHolder(view)

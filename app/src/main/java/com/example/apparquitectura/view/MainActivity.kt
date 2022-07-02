@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupListUpdate(){
         couponViewmodel?.callCoupons()
         couponViewmodel?.getCoupons()?.observe(this, Observer {
-                coupon:List<Coupon> -> Log.w("COUPON", coupon[0].title)
+                coupons:List<Coupon> -> Log.w("COUPON", coupons[0].title)
         })
     }
 }
