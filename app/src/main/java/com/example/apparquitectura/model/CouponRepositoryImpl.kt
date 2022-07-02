@@ -39,7 +39,7 @@ class CouponRepositoryImpl: CouponRepository {
 
     }
 
-    override fun getCouponAPI() {
-
+    override fun getCoupons(): MutableLiveData<List<Coupon>> {
+        return  coupons
     }
 }

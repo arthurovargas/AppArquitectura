@@ -1,6 +1,7 @@
 package com.example.apparquitectura.model
 
 import androidx.databinding.BaseObservable
+import androidx.lifecycle.MutableLiveData
 
 class CouponObservable: BaseObservable() {
     // Repository network
@@ -10,5 +11,8 @@ class CouponObservable: BaseObservable() {
         couponRepository.callCouponAPI()
     }
     // ViewModel network
+    fun getCoupons(): MutableLiveData<List<Coupon>>{
+        return couponRepository.getCoupons()
+    }
 
 }
