@@ -6,5 +6,5 @@ interface CouponView {
     // Presenter
     fun getCoupons()
     //function returning a coupons list
-    fun showCoupons(coupons: ArrayList<Coupon>)
+    fun showCoupons(coupons: ArrayList<Coupon>?)
 }

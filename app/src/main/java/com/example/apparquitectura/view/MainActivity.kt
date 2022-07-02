@@ -8,45 +8,42 @@ import android.util.Log
 import com.example.apparquitectura.model.Coupon
 import com.example.apparquitectura.R
 import com.example.apparquitectura.model.ApiAdapter
+import com.example.apparquitectura.presenter.CouponPresenter
+import com.example.apparquitectura.presenter.CouponPresenterImpl
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CouponView {
+
+    private var couponPresenter: CouponPresenter? = null
+    private var rvCoupons: RecyclerView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportActionBar?.hide()
+        couponPresenter = CouponPresenterImpl(this)
 
         //Generate list of coupon offers - View
-        val rvCoupons: RecyclerView = findViewById(R.id.rvCoupons)
-        rvCoupons.layoutManager = LinearLayoutManager(this)
-        val coupons = ArrayList<Coupon>()
+        rvCoupons = findViewById(R.id.rvCoupons)
+        rvCoupons?.layoutManager = LinearLayoutManager(this)
+        getCoupons()
+    }
 
-        // Call to API - Controller
-        val apiAdapter = ApiAdapter()
-        val apiService = apiAdapter.getClientService()
-        val call = apiService.getCoupons()
+    override fun getCoupons() {
+        couponPresenter?.getCoupons()
+    }
 
-        call.enqueue(object : Callback<JsonObject> {
-            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                Log.e("ERROR: ", t.message!!)
-                t.stackTrace
-            }
+    override fun showCoupons(coupons: ArrayList<Coupon>?) {
+        try {
+            rvCoupons!!.adapter = RecyclerCouponsAdapter(coupons, R.layout.card_coupon)
 
-            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                val offersJsonArray = response.body()?.getAsJsonArray("offers")
-                offersJsonArray?.forEach { jsonElement: JsonElement ->
-                    val jsonObject = jsonElement.asJsonObject
-                    val coupon = Coupon(jsonObject)
-                    coupons.add(coupon)
-                }
-
-                rvCoupons.adapter = RecyclerCouponsAdapter(coupons, R.layout.card_coupon)
-
-            }
-        })
+        } catch (e: Exception){
+            e.printStackTrace()
+        }
     }
 }
