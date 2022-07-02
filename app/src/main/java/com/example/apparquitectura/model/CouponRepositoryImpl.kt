@@ -1,23 +1,21 @@
 package com.example.apparquitectura.model
 
 import android.util.Log
-import com.example.apparquitectura.R
-import com.example.apparquitectura.presenter.CouponPresenter
-import com.example.apparquitectura.view.RecyclerCouponsAdapter
+import androidx.lifecycle.MutableLiveData
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CouponRepositoryImpl(private val couponPresenter: CouponPresenter): CouponRepository {
-
-
+class CouponRepositoryImpl: CouponRepository {
+    // MutableLiveData refresh changes automatically
+    private var coupons = MutableLiveData<List<Coupon>>()
     //Implement all business logic
-    override fun getCouponAPI() {
+    override fun callCouponAPI() {
 
         // Call to API - Controller
-        var coupons: ArrayList<Coupon>? =ArrayList<Coupon>()
+        var couponsList: ArrayList<Coupon>? =ArrayList<Coupon>()
         val apiAdapter = ApiAdapter()
         val apiService = apiAdapter.getClientService()
         val call = apiService.getCoupons()
@@ -33,11 +31,15 @@ class CouponRepositoryImpl(private val couponPresenter: CouponPresenter): Coupon
                 offersJsonArray?.forEach { jsonElement: JsonElement ->
                     val jsonObject = jsonElement.asJsonObject
                     val coupon = Coupon(jsonObject)
-                    coupons?.add(coupon)
+                    couponsList?.add(coupon)
                 }
-                couponPresenter.showCoupons(coupons)
+                coupons.value = couponsList
             }
         })
+
+    }
+
+    override fun getCouponAPI() {
 
     }
 }
