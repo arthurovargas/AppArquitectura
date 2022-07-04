@@ -1,6 +1,7 @@
 package com.example.apparquitectura.view
 
 import android.content.Intent
+import android.icu.text.Transliterator
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
+import com.example.apparquitectura.BR
 import com.example.apparquitectura.model.Coupon
 import com.example.apparquitectura.R
 import com.example.apparquitectura.viewmodel.CouponViewmodel
@@ -35,42 +37,27 @@ class RecyclerCouponsAdapter(var couponViewmodel: CouponViewmodel ,var resource:
     }
 
     override fun onBindViewHolder(p0: CardCouponHolder, p1: Int) {
-        var coupon = coupons?.get(p1)
-        p0.setDataCard(coupon)
+        p0.setDataCard(couponViewmodel, p1)
     }
 
-    class CardCouponHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
+    override fun getItemViewType(position: Int): Int {
+        return super.getItemViewType(position)
+    }
 
-        private var coupon: Coupon? = null
-        private var imgCoupon: ImageView = v.findViewById(R.id.imgCoupon)
-        private var tvTitle: TextView = v.findViewById(R.id.tvTitle)
-        private var tvDescriptionShort: TextView = v.findViewById(R.id.tvDescriptionShort)
-        private var tvCategory: TextView = v.findViewById(R.id.tvCategory)
-        private var tvDate: TextView = v.findViewById(R.id.tvDate)
+    fun getLayoutIdForPosition(position: Int): Int {
+        return resource
+    }
 
+    class CardCouponHolder(binding:ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
+        private var binding: ViewDataBinding? = null
         init {
-            v.setOnClickListener(this)
+            this.binding = binding
         }
 
-        fun setDataCard(coupon: Coupon?){
-            this.coupon = coupon
-            if (coupon?.image_url?.isNotEmpty() == true){
-                Picasso.get().load(coupon.image_url).resize(520, 520).centerCrop().into(imgCoupon)
-            }
-            tvTitle.setText(coupon?.title)
-            tvDescriptionShort.setText(coupon?.description)
-            tvCategory.setText(coupon?.category)
-            tvDate.setText(coupon?.endDate)
-
-        }
-
-        override fun onClick(v: View) {
-            Log.i("CLICK Coupon: ", coupon?.title!!)
-            val context = v.context
-            val showPhotoIntent = Intent(context, CouponDetailActivity::class.java)
-            showPhotoIntent.putExtra("COUPON", coupon)
-            context.startActivity(showPhotoIntent)
-
+        fun setDataCard(couponViewmodel: CouponViewmodel, position:Int){
+            binding?.setVariable(BR.model, couponViewmodel)
+            binding?.setVariable(BR.position, position)
+            binding?.executePendingBindings()
         }
     }
 }
